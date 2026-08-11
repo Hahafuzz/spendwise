@@ -53,7 +53,7 @@
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
         }
 
         .stat {
@@ -136,19 +136,68 @@
             margin-top: 20px;
         }
 
-        .info {
+        .info,
+        .status {
             background: #f3f4f6;
             padding: 15px;
             border-radius: 10px;
             line-height: 1.7;
         }
 
-        .status {
-            padding: 15px;
-            border-radius: 10px;
-            background: #f3f4f6;
-            line-height: 1.6;
+        .progress {
+            width: 100%;
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 15px;
         }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #111827;
+        }
+
+        /* DAILY HISTORY */
+
+        .day-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #e5e7eb;
+            cursor: pointer;
+        }
+
+        .day-row:hover {
+            background: #f9fafb;
+        }
+
+        .day-date {
+            font-weight: bold;
+        }
+
+        .day-details {
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .day-amount {
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .day-expenses {
+            display: none;
+            background: #f9fafb;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* EXPENSE LIST */
 
         .expense {
             display: flex;
@@ -184,41 +233,67 @@
             font-weight: bold;
         }
 
-        .empty {
-            text-align: center;
-            color: #9ca3af;
-            padding: 25px;
-        }
+        /* CATEGORY */
 
         .category-row {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
         }
 
-        .progress {
+        /* GRAPH */
+
+        .chart-wrapper {
             width: 100%;
-            height: 12px;
-            background: #e5e7eb;
-            border-radius: 20px;
-            overflow: hidden;
-            margin-top: 10px;
+            overflow-x: auto;
+            padding-top: 10px;
         }
 
-        .progress-bar {
-            height: 100%;
-            width: 0%;
+        #dailyChart {
+            display: block;
+            min-width: 650px;
+            width: 100%;
+            height: 380px;
+        }
+
+        .chart-note {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .legend-box {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
             background: #111827;
         }
 
-        .button-row {
-            display: flex;
-            gap: 10px;
+        .legend-line {
+            width: 24px;
+            height: 3px;
+            background: #dc2626;
         }
 
-        .button-row button {
-            flex: 1;
+        .empty {
+            text-align: center;
+            color: #9ca3af;
+            padding: 25px;
         }
 
         @media (max-width: 700px) {
@@ -256,6 +331,8 @@
 
 <div class="container">
 
+
+    <!-- HEADER -->
 
     <header>
 
@@ -348,6 +425,7 @@
 
         <h2>💰 Budget Setup</h2>
 
+
         <label>
             Daily Allowance
         </label>
@@ -403,11 +481,12 @@
     </div>
 
 
-    <!-- STATUS -->
+    <!-- BUDGET STATUS -->
 
     <div class="card">
 
         <h2>📊 Budget Status</h2>
+
 
         <div
             class="status"
@@ -415,6 +494,7 @@
         >
             Set a budget to see your status.
         </div>
+
 
         <div class="progress">
 
@@ -433,6 +513,7 @@
     <div class="card">
 
         <h2>➕ Add Expense</h2>
+
 
         <button
             class="primary"
@@ -535,11 +616,74 @@
     </div>
 
 
-    <!-- EXPENSE HISTORY -->
+    <!-- DAILY SPENDING CHART -->
 
     <div class="card">
 
-        <h2>📋 Expense History</h2>
+        <h2>📊 Daily Spending</h2>
+
+        <p class="chart-note">
+            Your daily spending compared with your daily budget.
+        </p>
+
+
+        <div class="legend">
+
+            <div class="legend-item">
+
+                <span class="legend-box"></span>
+
+                <span>Daily spending</span>
+
+            </div>
+
+
+            <div class="legend-item">
+
+                <span class="legend-line"></span>
+
+                <span>Daily budget</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-wrapper">
+
+            <canvas
+                id="dailyChart"
+            ></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- DAILY HISTORY -->
+
+    <div class="card">
+
+        <h2>📅 Daily History</h2>
+
+
+        <div id="dailyHistory">
+
+            <div class="empty">
+                No spending history yet.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ALL EXPENSES -->
+
+    <div class="card">
+
+        <h2>📋 All Expenses</h2>
+
 
         <div id="expenseList">
 
@@ -557,6 +701,7 @@
     <div class="card">
 
         <h2>📈 Spending by Category</h2>
+
 
         <div id="categorySummary">
 
@@ -579,16 +724,13 @@
             Your data is stored locally in this browser.
         </p>
 
-        <div class="button-row">
 
-            <button
-                class="secondary"
-                onclick="clearAllData()"
-            >
-                Reset Everything
-            </button>
-
-        </div>
+        <button
+            class="secondary"
+            onclick="clearAllData()"
+        >
+            Reset Everything
+        </button>
 
     </div>
 
@@ -599,9 +741,9 @@
 <script>
 
 
-    // =========================
-    // DATA
-    // =========================
+    // ==========================================
+    // LOAD SAVED DATA
+    // ==========================================
 
 
     let budget =
@@ -620,9 +762,9 @@
         ) || [];
 
 
-    // =========================
+    // ==========================================
     // MONEY FORMAT
-    // =========================
+    // ==========================================
 
 
     function money(amount) {
@@ -635,9 +777,9 @@
     }
 
 
-    // =========================
+    // ==========================================
     // TODAY
-    // =========================
+    // ==========================================
 
 
     function today() {
@@ -645,18 +787,28 @@
         const date =
             new Date();
 
+
         const year =
             date.getFullYear();
+
 
         const month =
             String(
                 date.getMonth() + 1
-            ).padStart(2, "0");
+            ).padStart(
+                2,
+                "0"
+            );
+
 
         const day =
             String(
                 date.getDate()
-            ).padStart(2, "0");
+            ).padStart(
+                2,
+                "0"
+            );
+
 
         return (
             year +
@@ -669,9 +821,35 @@
     }
 
 
-    // =========================
+    // ==========================================
+    // FORMAT DATE
+    // ==========================================
+
+
+    function formatDate(dateString) {
+
+        const date =
+            new Date(
+                dateString +
+                "T00:00:00"
+            );
+
+
+        return date.toLocaleDateString(
+            "en-IN",
+            {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+    }
+
+
+    // ==========================================
     // SHOW EXPENSE FORM
-    // =========================
+    // ==========================================
 
 
     function showExpenseForm() {
@@ -683,29 +861,34 @@
 
 
         if (
-            form.style.display === "block"
+            form.style.display ===
+            "block"
         ) {
 
-            form.style.display = "none";
+            form.style.display =
+                "none";
 
         }
 
         else {
 
-            form.style.display = "block";
+            form.style.display =
+                "block";
+
 
             document.getElementById(
                 "expenseDate"
-            ).value = today();
+            ).value =
+                today();
 
         }
 
     }
 
 
-    // =========================
+    // ==========================================
     // SAVE BUDGET
-    // =========================
+    // ==========================================
 
 
     function saveBudget() {
@@ -749,11 +932,14 @@
 
         budget = {
 
-            daily: daily,
+            daily:
+                daily,
 
-            start: start,
+            start:
+                start,
 
-            days: days
+            days:
+                days
 
         };
 
@@ -762,7 +948,9 @@
 
             "spendwiseBudget",
 
-            JSON.stringify(budget)
+            JSON.stringify(
+                budget
+            )
 
         );
 
@@ -777,9 +965,9 @@
     }
 
 
-    // =========================
+    // ==========================================
     // ADD EXPENSE
-    // =========================
+    // ==========================================
 
 
     function addExpense() {
@@ -810,7 +998,9 @@
             ).value;
 
 
-        if (amount <= 0) {
+        if (
+            amount <= 0
+        ) {
 
             alert(
                 "Please enter a valid amount."
@@ -821,7 +1011,9 @@
         }
 
 
-        if (!category) {
+        if (
+            !category
+        ) {
 
             alert(
                 "Please select a category."
@@ -832,7 +1024,9 @@
         }
 
 
-        if (!date) {
+        if (
+            !date
+        ) {
 
             alert(
                 "Please select a date."
@@ -845,17 +1039,21 @@
 
         const expense = {
 
-            id: Date.now(),
+            id:
+                Date.now(),
 
-            amount: amount,
+            amount:
+                amount,
 
-            category: category,
+            category:
+                category,
 
             description:
                 description ||
                 "Expense",
 
-            date: date
+            date:
+                date
 
         };
 
@@ -893,7 +1091,8 @@
 
         document.getElementById(
             "expenseForm"
-        ).style.display = "none";
+        ).style.display =
+            "none";
 
 
         update();
@@ -901,9 +1100,9 @@
     }
 
 
-    // =========================
+    // ==========================================
     // DELETE EXPENSE
-    // =========================
+    // ==========================================
 
 
     function deleteExpense(id) {
@@ -936,9 +1135,9 @@
     }
 
 
-    // =========================
+    // ==========================================
     // RESET EVERYTHING
-    // =========================
+    // ==========================================
 
 
     function clearAllData() {
@@ -949,7 +1148,9 @@
             );
 
 
-        if (!answer) {
+        if (
+            !answer
+        ) {
 
             return;
 
@@ -966,9 +1167,12 @@
         );
 
 
-        budget = null;
+        budget =
+            null;
 
-        expenses = [];
+
+        expenses =
+            [];
 
 
         update();
@@ -976,107 +1180,53 @@
     }
 
 
-    // =========================
-    // UPDATE DASHBOARD
-    // =========================
+    // ==========================================
+    // MAIN UPDATE
+    // ==========================================
 
 
     function update() {
 
-
-        // If no budget
-
-        if (!budget) {
-
-            document.getElementById(
-                "todayAllowance"
-            ).textContent = "₹0";
+        let totalSpent =
+            0;
 
 
-            document.getElementById(
-                "spentToday"
-            ).textContent = "₹0";
+        let spentToday =
+            0;
 
 
-            document.getElementById(
-                "remainingToday"
-            ).textContent = "₹0";
+        expenses.forEach(
+            function(expense) {
+
+                totalSpent +=
+                    Number(
+                        expense.amount
+                    );
 
 
-            document.getElementById(
-                "totalBudget"
-            ).textContent = "₹0";
+                if (
+                    expense.date ===
+                    today()
+                ) {
 
-
-            document.getElementById(
-                "totalSpent"
-            ).textContent = "₹0";
-
-
-            document.getElementById(
-                "totalRemaining"
-            ).textContent = "₹0";
-
-
-            document.getElementById(
-                "budgetInfo"
-            ).innerHTML =
-                "No budget has been set yet.";
-
-
-            document.getElementById(
-                "budgetStatus"
-            ).textContent =
-                "Set a budget to start tracking.";
-
-
-            document.getElementById(
-                "progressBar"
-            ).style.width = "0%";
-
-        }
-
-
-        else {
-
-
-            const totalBudget =
-                budget.daily *
-                budget.days;
-
-
-            let totalSpent =
-                0;
-
-
-            let spentToday =
-                0;
-
-
-            expenses.forEach(
-                function(expense) {
-
-
-                    totalSpent +=
+                    spentToday +=
                         Number(
                             expense.amount
                         );
 
-
-                    if (
-                        expense.date ===
-                        today()
-                    ) {
-
-                        spentToday +=
-                            Number(
-                                expense.amount
-                            );
-
-                    }
-
                 }
-            );
+
+            }
+        );
+
+
+        if (
+            budget
+        ) {
+
+            const totalBudget =
+                budget.daily *
+                budget.days;
 
 
             const remainingToday =
@@ -1088,8 +1238,6 @@
                 totalBudget -
                 totalSpent;
 
-
-            // Dashboard cards
 
             document.getElementById(
                 "todayAllowance"
@@ -1139,19 +1287,21 @@
                 );
 
 
-            // Budget information
-
             document.getElementById(
                 "budgetInfo"
             ).innerHTML =
 
                 "<strong>Daily Allowance:</strong> " +
-                money(budget.daily) +
+                money(
+                    budget.daily
+                ) +
 
                 "<br>" +
 
                 "<strong>Start Date:</strong> " +
-                budget.start +
+                formatDate(
+                    budget.start
+                ) +
 
                 "<br>" +
 
@@ -1162,22 +1312,26 @@
                 "<br>" +
 
                 "<strong>Total Budget:</strong> " +
-                money(totalBudget);
+                money(
+                    totalBudget
+                );
 
-
-            // Spending percentage
 
             let percentage =
                 0;
 
 
-            if (totalBudget > 0) {
+            if (
+                totalBudget >
+                0
+            ) {
 
                 percentage =
                     (
                         totalSpent /
                         totalBudget
-                    ) * 100;
+                    ) *
+                    100;
 
             }
 
@@ -1195,16 +1349,17 @@
             document.getElementById(
                 "progressBar"
             ).style.width =
-                percentage + "%";
+                percentage +
+                "%";
 
 
-            // Status
-
-            let status = "";
+            let status =
+                "";
 
 
             if (
-                totalRemaining < 0
+                totalRemaining <
+                0
             ) {
 
                 status =
@@ -1218,9 +1373,9 @@
 
             }
 
-
             else if (
-                remainingToday < 0
+                remainingToday <
+                0
             ) {
 
                 status =
@@ -1234,24 +1389,27 @@
 
             }
 
-
             else if (
-                percentage >= 80
+                percentage >=
+                80
             ) {
 
                 status =
                     "🟡 You have used " +
-                    percentage.toFixed(0) +
+                    percentage.toFixed(
+                        0
+                    ) +
                     "% of your total budget.";
 
             }
-
 
             else {
 
                 status =
                     "🟢 You're on track! You have used " +
-                    percentage.toFixed(0) +
+                    percentage.toFixed(
+                        0
+                    ) +
                     "% of your budget.";
 
             }
@@ -1265,16 +1423,962 @@
         }
 
 
+        else {
+
+            document.getElementById(
+                "todayAllowance"
+            ).textContent =
+                "₹0";
+
+
+            document.getElementById(
+                "spentToday"
+            ).textContent =
+                money(
+                    spentToday
+                );
+
+
+            document.getElementById(
+                "remainingToday"
+            ).textContent =
+                "₹0";
+
+
+            document.getElementById(
+                "totalBudget"
+            ).textContent =
+                "₹0";
+
+
+            document.getElementById(
+                "totalSpent"
+            ).textContent =
+                money(
+                    totalSpent
+                );
+
+
+            document.getElementById(
+                "totalRemaining"
+            ).textContent =
+                "₹0";
+
+        }
+
+
+        updateDailyHistory();
+
         updateExpenseList();
 
         updateCategories();
 
+        drawDailyChart();
+
     }
 
 
-    // =========================
-    // EXPENSE LIST
-    // =========================
+    // ==========================================
+    // DAILY HISTORY
+    // ==========================================
+
+
+    function updateDailyHistory() {
+
+        const history =
+            document.getElementById(
+                "dailyHistory"
+            );
+
+
+        if (
+            expenses.length ===
+            0
+        ) {
+
+            history.innerHTML =
+
+                '<div class="empty">' +
+                'No spending history yet.' +
+                '</div>';
+
+
+            return;
+
+        }
+
+
+        const days =
+            {};
+
+
+        expenses.forEach(
+            function(expense) {
+
+                if (
+                    !days[
+                        expense.date
+                    ]
+                ) {
+
+                    days[
+                        expense.date
+                    ] = [];
+
+                }
+
+
+                days[
+                    expense.date
+                ].push(
+                    expense
+                );
+
+            }
+        );
+
+
+        history.innerHTML =
+            "";
+
+
+        const dates =
+            Object.keys(
+                days
+            )
+            .sort()
+            .reverse();
+
+
+        dates.forEach(
+            function(date) {
+
+                const dayExpenses =
+                    days[
+                        date
+                    ];
+
+
+                let total =
+                    0;
+
+
+                dayExpenses.forEach(
+                    function(expense) {
+
+                        total +=
+                            Number(
+                                expense.amount
+                            );
+
+                    }
+                );
+
+
+                const row =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                row.className =
+                    "day-row";
+
+
+                row.innerHTML =
+
+                    "<div>" +
+
+                    '<div class="day-date">' +
+                    formatDate(
+                        date
+                    ) +
+                    "</div>" +
+
+                    '<div class="day-details">' +
+                    dayExpenses.length +
+                    " expense" +
+                    (
+                        dayExpenses.length ===
+                        1
+                        ? ""
+                        : "s"
+                    ) +
+                    "</div>" +
+
+                    "</div>" +
+
+                    '<div class="day-amount">' +
+                    money(
+                        total
+                    ) +
+                    "</div>";
+
+
+                row.onclick =
+                    function() {
+
+                        const details =
+                            document.getElementById(
+                                "day-" +
+                                date
+                            );
+
+
+                        if (
+                            details.style.display ===
+                            "block"
+                        ) {
+
+                            details.style.display =
+                                "none";
+
+                        }
+
+                        else {
+
+                            details.style.display =
+                                "block";
+
+                        }
+
+                    };
+
+
+                history.appendChild(
+                    row
+                );
+
+
+                const details =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                details.className =
+                    "day-expenses";
+
+
+                details.id =
+                    "day-" +
+                    date;
+
+
+                dayExpenses.forEach(
+                    function(expense) {
+
+                        const item =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        item.style.padding =
+                            "8px 0";
+
+
+                        item.textContent =
+
+                            expense.category +
+                            " — " +
+                            expense.description +
+                            " — " +
+                            money(
+                                expense.amount
+                            );
+
+
+                        details.appendChild(
+                            item
+                        );
+
+                    }
+                );
+
+
+                history.appendChild(
+                    details
+                );
+
+            }
+        );
+
+    }
+
+
+    // ==========================================
+    // DAILY BAR + BUDGET LINE CHART
+    // ==========================================
+
+
+    function drawDailyChart() {
+
+        const canvas =
+            document.getElementById(
+                "dailyChart"
+            );
+
+
+        const ctx =
+            canvas.getContext(
+                "2d"
+            );
+
+
+        const width =
+            Math.max(
+                canvas.parentElement.clientWidth,
+                650
+            );
+
+
+        const height =
+            380;
+
+
+        const pixelRatio =
+            window.devicePixelRatio ||
+            1;
+
+
+        canvas.width =
+            width *
+            pixelRatio;
+
+
+        canvas.height =
+            height *
+            pixelRatio;
+
+
+        canvas.style.width =
+            width +
+            "px";
+
+
+        canvas.style.height =
+            height +
+            "px";
+
+
+        ctx.setTransform(
+            pixelRatio,
+            0,
+            0,
+            pixelRatio,
+            0,
+            0
+        );
+
+
+        ctx.clearRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        if (
+            expenses.length ===
+            0
+        ) {
+
+            ctx.font =
+                "16px Arial";
+
+
+            ctx.fillText(
+                "Add expenses to see your daily spending.",
+                30,
+                60
+            );
+
+
+            return;
+
+        }
+
+
+        // ======================================
+        // GROUP EXPENSES BY DATE
+        // ======================================
+
+
+        const daily =
+            {};
+
+
+        expenses.forEach(
+            function(expense) {
+
+                if (
+                    !daily[
+                        expense.date
+                    ]
+                ) {
+
+                    daily[
+                        expense.date
+                    ] =
+                        0;
+
+                }
+
+
+                daily[
+                    expense.date
+                ] +=
+                    Number(
+                        expense.amount
+                    );
+
+            }
+        );
+
+
+        const dates =
+            Object.keys(
+                daily
+            )
+            .sort();
+
+
+        const values =
+            dates.map(
+                function(date) {
+
+                    return daily[
+                        date
+                    ];
+
+                }
+            );
+
+
+        // ======================================
+        // BUDGET
+        // ======================================
+
+
+        const dailyBudget =
+            budget
+            ? Number(
+                budget.daily
+            )
+            : null;
+
+
+        // ======================================
+        // FIND MAXIMUM
+        // ======================================
+
+
+        let maximum =
+            Math.max(
+                ...values
+            );
+
+
+        if (
+            dailyBudget !==
+            null
+        ) {
+
+            maximum =
+                Math.max(
+                    maximum,
+                    dailyBudget
+                );
+
+        }
+
+
+        if (
+            maximum <=
+            0
+        ) {
+
+            maximum =
+                100;
+
+        }
+
+
+        // Add some space above tallest bar
+
+        maximum =
+            maximum *
+            1.2;
+
+
+        // ======================================
+        // CHART DIMENSIONS
+        // ======================================
+
+
+        const paddingLeft =
+            65;
+
+
+        const paddingRight =
+            25;
+
+
+        const paddingTop =
+            30;
+
+
+        const paddingBottom =
+            65;
+
+
+        const chartWidth =
+            width -
+            paddingLeft -
+            paddingRight;
+
+
+        const chartHeight =
+            height -
+            paddingTop -
+            paddingBottom;
+
+
+        // ======================================
+        // BACKGROUND GRID
+        // ======================================
+
+
+        ctx.font =
+            "12px Arial";
+
+
+        ctx.textAlign =
+            "right";
+
+
+        ctx.textBaseline =
+            "middle";
+
+
+        const gridLines =
+            5;
+
+
+        for (
+            let i = 0;
+            i <= gridLines;
+            i++
+        ) {
+
+            const value =
+                (
+                    maximum /
+                    gridLines
+                ) *
+                i;
+
+
+            const y =
+                height -
+                paddingBottom -
+                (
+                    value /
+                    maximum
+                ) *
+                chartHeight;
+
+
+            ctx.beginPath();
+
+
+            ctx.moveTo(
+                paddingLeft,
+                y
+            );
+
+
+            ctx.lineTo(
+                width -
+                paddingRight,
+                y
+            );
+
+
+            ctx.strokeStyle =
+                "#e5e7eb";
+
+
+            ctx.lineWidth =
+                1;
+
+
+            ctx.stroke();
+
+
+            ctx.fillStyle =
+                "#6b7280";
+
+
+            ctx.fillText(
+                money(
+                    Math.round(
+                        value
+                    )
+                ),
+                paddingLeft -
+                10,
+                y
+            );
+
+        }
+
+
+        // ======================================
+        // AXES
+        // ======================================
+
+
+        ctx.beginPath();
+
+
+        ctx.moveTo(
+            paddingLeft,
+            paddingTop
+        );
+
+
+        ctx.lineTo(
+            paddingLeft,
+            height -
+            paddingBottom
+        );
+
+
+        ctx.lineTo(
+            width -
+            paddingRight,
+            height -
+            paddingBottom
+        );
+
+
+        ctx.strokeStyle =
+            "#9ca3af";
+
+
+        ctx.lineWidth =
+            1;
+
+
+        ctx.stroke();
+
+
+        // ======================================
+        // BAR WIDTH
+        // ======================================
+
+
+        const slotWidth =
+            chartWidth /
+            dates.length;
+
+
+        const barWidth =
+            Math.min(
+                60,
+                slotWidth *
+                0.65
+            );
+
+
+        // ======================================
+        // DRAW BARS
+        // ======================================
+
+
+        dates.forEach(
+            function(date, index) {
+
+                const value =
+                    daily[
+                        date
+                    ];
+
+
+                const barHeight =
+                    (
+                        value /
+                        maximum
+                    ) *
+                    chartHeight;
+
+
+                const x =
+                    paddingLeft +
+                    index *
+                    slotWidth +
+                    (
+                        slotWidth -
+                        barWidth
+                    ) /
+                    2;
+
+
+                const y =
+                    height -
+                    paddingBottom -
+                    barHeight;
+
+
+                /*
+                 * If spending is above
+                 * the budget, use a warning
+                 * appearance.
+                 */
+
+
+                if (
+                    dailyBudget !==
+                    null &&
+                    value >
+                    dailyBudget
+                ) {
+
+                    ctx.fillStyle =
+                        "#dc2626";
+
+                }
+
+                else {
+
+                    ctx.fillStyle =
+                        "#111827";
+
+                }
+
+
+                ctx.fillRect(
+                    x,
+                    y,
+                    barWidth,
+                    barHeight
+                );
+
+
+                // Amount above bar
+
+                ctx.fillStyle =
+                    "#1f2937";
+
+
+                ctx.font =
+                    "12px Arial";
+
+
+                ctx.textAlign =
+                    "center";
+
+
+                ctx.textBaseline =
+                    "bottom";
+
+
+                ctx.fillText(
+                    money(value),
+                    x +
+                    barWidth /
+                    2,
+                    y -
+                    5
+                );
+
+
+                // Date
+
+                ctx.fillStyle =
+                    "#6b7280";
+
+
+                ctx.textBaseline =
+                    "top";
+
+
+                ctx.fillText(
+                    formatShortDate(
+                        date
+                    ),
+                    x +
+                    barWidth /
+                    2,
+                    height -
+                    paddingBottom +
+                    10
+                );
+
+            }
+        );
+
+
+        // ======================================
+        // DRAW BUDGET LINE
+        // ======================================
+
+
+        if (
+            dailyBudget !==
+            null
+        ) {
+
+            const budgetY =
+                height -
+                paddingBottom -
+                (
+                    dailyBudget /
+                    maximum
+                ) *
+                chartHeight;
+
+
+            ctx.beginPath();
+
+
+            ctx.moveTo(
+                paddingLeft,
+                budgetY
+            );
+
+
+            ctx.lineTo(
+                width -
+                paddingRight,
+                budgetY
+            );
+
+
+            ctx.strokeStyle =
+                "#dc2626";
+
+
+            ctx.lineWidth =
+                3;
+
+
+            ctx.stroke();
+
+
+            // Budget label
+
+            ctx.fillStyle =
+                "#dc2626";
+
+
+            ctx.font =
+                "bold 12px Arial";
+
+
+            ctx.textAlign =
+                "right";
+
+
+            ctx.textBaseline =
+                "bottom";
+
+
+            ctx.fillText(
+                "Budget " +
+                money(
+                    dailyBudget
+                ),
+                width -
+                paddingRight,
+                budgetY -
+                6
+            );
+
+        }
+
+
+        // ======================================
+        // Y AXIS LABEL
+        // ======================================
+
+
+        ctx.save();
+
+
+        ctx.translate(
+            18,
+            height /
+            2
+        );
+
+
+        ctx.rotate(
+            -Math.PI /
+            2
+        );
+
+
+        ctx.fillStyle =
+            "#6b7280";
+
+
+        ctx.font =
+            "12px Arial";
+
+
+        ctx.textAlign =
+            "center";
+
+
+        ctx.fillText(
+            "Amount spent",
+            0,
+            0
+        );
+
+
+        ctx.restore();
+
+    }
+
+
+    // ==========================================
+    // SHORT DATE
+    // ==========================================
+
+
+    function formatShortDate(
+        dateString
+    ) {
+
+        const date =
+            new Date(
+                dateString +
+                "T00:00:00"
+            );
+
+
+        return date.toLocaleDateString(
+            "en-IN",
+            {
+                day:
+                    "numeric",
+
+                month:
+                    "short"
+            }
+        );
+
+    }
+
+
+    // ==========================================
+    // ALL EXPENSES
+    // ==========================================
 
 
     function updateExpenseList() {
@@ -1286,43 +2390,46 @@
 
 
         if (
-            expenses.length === 0
+            expenses.length ===
+            0
         ) {
 
             list.innerHTML =
 
                 '<div class="empty">' +
-                'No expenses yet.' +
-                '</div>';
+                "No expenses yet." +
+                "</div>";
+
 
             return;
 
         }
 
 
-        list.innerHTML = "";
+        list.innerHTML =
+            "";
 
 
         const sorted =
             expenses
-                .slice()
-                .sort(
-                    function(a, b) {
+            .slice()
+            .sort(
+                function(a, b) {
 
-                        return (
-                            b.date.localeCompare(
-                                a.date
-                            ) ||
-                            b.id - a.id
-                        );
+                    return (
+                        b.date.localeCompare(
+                            a.date
+                        ) ||
+                        b.id -
+                        a.id
+                    );
 
-                    }
-                );
+                }
+            );
 
 
         sorted.forEach(
             function(expense) {
-
 
                 const row =
                     document.createElement(
@@ -1336,20 +2443,21 @@
 
                 row.innerHTML =
 
-                    '<div>' +
+                    "<div>" +
 
                     '<div class="expense-title">' +
                     expense.category +
-                    '</div>' +
+                    "</div>" +
 
                     '<div class="expense-details">' +
                     expense.description +
-                    ' • ' +
-                    expense.date +
-                    '</div>' +
+                    " • " +
+                    formatDate(
+                        expense.date
+                    ) +
+                    "</div>" +
 
-                    '</div>' +
-
+                    "</div>" +
 
                     '<div class="expense-right">' +
 
@@ -1357,19 +2465,21 @@
                     money(
                         expense.amount
                     ) +
-                    '</span>' +
+                    "</span>" +
 
-                    '<button ' +
+                    "<button " +
+
                     'class="danger" ' +
+
                     'onclick="deleteExpense(' +
                     expense.id +
                     ')">' +
 
-                    'Delete' +
+                    "Delete" +
 
-                    '</button>' +
+                    "</button>" +
 
-                    '</div>';
+                    "</div>";
 
 
                 list.appendChild(
@@ -1382,9 +2492,9 @@
     }
 
 
-    // =========================
+    // ==========================================
     // CATEGORY SUMMARY
-    // =========================
+    // ==========================================
 
 
     function updateCategories() {
@@ -1396,21 +2506,24 @@
 
 
         if (
-            expenses.length === 0
+            expenses.length ===
+            0
         ) {
 
             summary.innerHTML =
 
                 '<div class="empty">' +
-                'No spending data yet.' +
-                '</div>';
+                "No spending data yet." +
+                "</div>";
+
 
             return;
 
         }
 
 
-        const categories = {};
+        const categories =
+            {};
 
 
         expenses.forEach(
@@ -1424,29 +2537,31 @@
 
                     categories[
                         expense.category
-                    ] = 0;
+                    ] =
+                        0;
 
                 }
 
 
                 categories[
                     expense.category
-                ] += Number(
-                    expense.amount
-                );
+                ] +=
+                    Number(
+                        expense.amount
+                    );
 
             }
         );
 
 
-        summary.innerHTML = "";
+        summary.innerHTML =
+            "";
 
 
         Object.keys(
             categories
         ).forEach(
             function(category) {
-
 
                 const row =
                     document.createElement(
@@ -1483,12 +2598,14 @@
     }
 
 
-    // =========================
-    // LOAD SAVED DATA
-    // =========================
+    // ==========================================
+    // LOAD SAVED BUDGET
+    // ==========================================
 
 
-    if (budget) {
+    if (
+        budget
+    ) {
 
         document.getElementById(
             "dailyAllowance"
@@ -1510,7 +2627,27 @@
     }
 
 
+    // ==========================================
+    // START APPLICATION
+    // ==========================================
+
+
     update();
+
+
+    // ==========================================
+    // REDRAW CHART WHEN WINDOW RESIZES
+    // ==========================================
+
+
+    window.addEventListener(
+        "resize",
+        function() {
+
+            drawDailyChart();
+
+        }
+    );
 
 
 </script>
